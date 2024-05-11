@@ -1,20 +1,30 @@
-function longestPalindrome(s) {
-  let longest = "";
-  for (let i = 0; i < s.length; i++) {
-    const oddPalindrome = expandAroundCenter(s, i, i);
-    const evenPalindrome = expandAroundCenter(s, i, i + 1);
-    const currentLongest =
-      oddPalindrome.length > evenPalindrome.length
-        ? oddPalindrome
-        : evenPalindrome;
-    if (currentLongest.length > longest.length) longest = currentLongest;
+function numIslands(grid) {
+  if (grid.length === 0 || grid[0].length === 0) return 0;
+  const rows = grid.length;
+  const cols = grid[0].length;
+  let islands = 0;
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      if (grid[i][j] === "1") {
+        islands++;
+        dfs(i, j);
+      }
+    }
   }
-  return longest;
-}
-function expandAroundCenter(s, left, right) {
-  while (left >= 0 && right < s.length && s[left] === s[right]) {
-    left--;
-    right++;
+  return islands;
+  function dfs(row, col) {
+    if (
+      row < 0 ||
+      row >= rows ||
+      col < 0 ||
+      col >= cols ||
+      grid[row][col] !== "1"
+    )
+      return;
+    grid[row][col] = "0";
+    dfs(row + 1, col);
+    dfs(row - 1, col);
+    dfs(row, col + 1);
+    dfs(row, col - 1);
   }
-  return s.slice(left + 1, right);
 }
